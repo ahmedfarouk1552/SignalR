@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "338b70db-7e26-440a-99b5-e159388b1d99": {
+      "ProjectGuid": "338b70db-7e26-440a-99b5-e159388b1d99",
+      "DisplayName": "SignalrChat",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}
