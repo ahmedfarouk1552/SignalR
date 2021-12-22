@@ -12,27 +12,59 @@
             let connection = $.hubConnection();
 
                    //create proxy
-            chatproxt = connection.createHubProxy("chat")
+            chatproxy = connection.createHubProxy("chat")
 
                    //start connection
             connection.start();
-            alert("connection start")
+            //alert("connection start")
 
             //define call back function(newmessage)
-            chatproxt.on("newmessage", function (n, m) {
-                $("ul").append("<li>" + n + ":" + m + "</li>")
-                alert("new message from server")
+            chatproxy.on("newmessage", function (n,m) {
+                $("ul").append("<li>" + n + ":" + m +"</li>")
+               // alert("new message from server")
             })
+
+            //subscribe event (newmember) in action joingroup
+            chatproxy.on("newmember", function (n, g) {
+                $("ul").append("<li>"+n+" joined "+g+"</li>")
+
+            })
+
+            //subscribe event (messagegroup) in action sendtogroup
+
+            chatproxy.on("messagegroup", function (g, n, m) {
+                $("ul").append("<li>"+n+"(" +g+ ") : " +m+"</li>")
+            })
+
 
         })
         function send() {
             //call server method(sendmessage)
-            chatproxt.invoke("sendmessage", name, $("#txt").val());
-            alert("call server method to send message")
+            //chatproxy.invoke("sendmessage", name, $("#txt").val());
+            //chatproxy.invoke("sendmessage", { name: name, message1: $("#txt").val() });
+
+            chatproxy.invoke("sendmessage", name, $("#txt").val());
+            //alert("call server method to send message")
 
 
         }
 
+        function join() {
+            
+                chatproxy.invoke("joingroup", $("#gtxt").val(), name);
+            
+        }
+
+        function sendgroup() {
+            
+
+                chatproxy.invoke("sendtogroup", $("#gtxt").val(), name, $("#txt").val());
+            
+        }
+
+        //function send2() {
+        //    chatproxy.invoke("sendmessage",name,"typing....")
+        //}
     </script>
     <!--<script src="/signalr/hubs"></script>
     <script>
@@ -55,9 +87,14 @@
     
 </head>
 <body>
-    <input type="text" id="txt" />
+    <input type="text" id="txt" <!--onkeyup="send2()-->" />
     <input type="button" value="Send" onclick="send()" />
-    <ul>
+    <br />
+    <input type="text" id="gtxt" />
+    <input type="button" value="Join Group" onclick="join()" />
+    <br />
+    <input type="button" value="send to group" onclick="sendgroup()" />
+    <ul style="font-size:medium;color:brown">
 
     </ul>
 </body>
